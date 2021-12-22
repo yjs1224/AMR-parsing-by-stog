@@ -242,5 +242,8 @@ if __name__ == "__main__":
 
     with open(args.amr_file + ".recategorize", "w", encoding="utf-8") as f:
         for amr in AMRIO.read(args.amr_file):
-            amr.abstract_map = text_anonymizor(amr)
-            f.write(str(amr) + "\n\n")
+            try:
+                amr.abstract_map = text_anonymizor(amr)
+                f.write(str(amr) + "\n\n")
+            except:
+                continue

@@ -7,7 +7,8 @@ set -e
 util_dir=data/AMR/amr_2.0_utils
 
 # AMR data with **features**
-data_dir=data/AMR/amr_2.0
+# data_dir=data/AMR/amr_2.0
+data_dir=$1
 train_data=${data_dir}/train.txt.features
 dev_data=${data_dir}/dev.txt.features
 test_data=${data_dir}/test.txt.features

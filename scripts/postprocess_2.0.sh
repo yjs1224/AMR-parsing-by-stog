@@ -13,7 +13,7 @@ test_data=$1
 
 printf "Frame lookup...`date`\n"
 python -u -m stog.data.dataset_readers.amr_parsing.postprocess.node_restore \
-    --amr_files ${test_data} \
+    --amr_files ${data} \
     --util_dir ${util_dir}
 printf "Done.`date`\n\n"
 

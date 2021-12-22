@@ -1,6 +1,7 @@
 import re
 
 from pycorenlp import StanfordCoreNLP
+from stanza.server import CoreNLPClient
 
 from stog.utils import logging
 
@@ -15,7 +16,8 @@ class FeatureAnnotator:
     DashedNumbers = re.compile(r'-*\d+-\d+')
 
     def __init__(self, url, compound_map_file):
-        self.nlp = StanfordCoreNLP(url)
+        # self.nlp = StanfordCoreNLP(url)
+        self.nlp = CoreNLPClient(annotators=["tokenize,ssplit,pos,lemma,ner"])
         self.nlp_properties = {
             'annotators': "tokenize,ssplit,pos,lemma,ner",
             "tokenize.options": "splitHyphenated=true,normalizeParentheses=false",
@@ -60,15 +62,23 @@ class FeatureAnnotator:
                 len(tokens), len(value), '\n', list(zip(tokens, value)), tokens, value)
 
     def annotate(self, text):
-        tokens = self.nlp.annotate(text.strip(), self.nlp_properties)['sentences'][0]['tokens']
+        # tokens = self.nlp.annotate(text.strip(), self.nlp_properties)['sentences'][0]['tokens']
+        # tokens = self.nlp.annotate(text.strip()).sentence[0].token
         output = dict(
             tokens=[], lemmas=[], pos_tags=[], ner_tags=[]
         )
-        for token in tokens:
-            output['tokens'].append(token['word'])
-            output['lemmas'].append(token['lemma'])
-            output['pos_tags'].append(token['pos'])
-            output['ner_tags'].append(token['ner'])
+        # for token in tokens:
+        #     output['tokens'].append(token['word'])
+        #     output['lemmas'].append(token['lemma'])
+        #     output['pos_tags'].append(token['pos'])
+        #     output['ner_tags'].append(token['ner'])
+        ann = self.nlp.annotate(text.strip())
+        for sentence in ann.sentence:
+            for token in sentence.token:
+                output['tokens'].append(token.word)
+                output['lemmas'].append(token.lemma)
+                output['pos_tags'].append(token.pos)
+                output['ner_tags'].append(token.ner)
         return output
 
     def __call__(self, text):
@@ -187,25 +197,41 @@ if __name__ == '__main__':
     import argparse
 
     from stog.data.dataset_readers.amr_parsing.io import AMRIO
+    # from stog.data.dataset_readers.amr_parsing.amr import AMR
 
     parser = argparse.ArgumentParser('feature_annotator.py')
     parser.add_argument('files', nargs='+', help='files to annotate.')
     parser.add_argument('--compound_file', default='')
 
     args = parser.parse_args()
-
     annotator = FeatureAnnotator('http://localhost:9000', args.compound_file)
-
     for file_path in args.files:
+        # with open(file_path, "r", encoding="utf-8") as f:
+        #     lines = f.readlines()
         logger.info('Processing {}'.format(file_path))
         with open(file_path + '.features', 'w', encoding='utf-8') as f:
             for i, amr in enumerate(AMRIO.read(file_path), 1):
                 if i % 1000 == 0:
                     logger.info('{} processed.'.format(i))
-                annotation = annotator(amr.sentence)
-                amr.tokens = annotation['tokens']
-                amr.lemmas = annotation['lemmas']
-                amr.pos_tags = annotation['pos_tags']
-                amr.ner_tags = annotation['ner_tags']
-                AMRIO.dump([amr], f)
+                try:
+                    annotation = annotator(amr.sentence)
+                    amr.tokens = annotation['tokens']
+                    amr.lemmas = annotation['lemmas']
+                    amr.pos_tags = annotation['pos_tags']
+                    amr.ner_tags = annotation['ner_tags']
+                    AMRIO.dump([amr], f)
+                except:
+                    continue
+            # for i, sentence in enumerate(lines, 1):
+            #     if i % 1000 == 0:
+            #         logger.info('{} processed.'.format(i))
+            #     annotation = annotator(sentence)
+            #     amr = AMR()
+            #     amr.id = i
+            #     amr.sentence = sentence
+            #     amr.tokens = annotation['tokens']
+            #     amr.lemmas = annotation['lemmas']
+            #     amr.pos_tags = annotation['pos_tags']
+            #     amr.ner_tags = annotation['ner_tags']
+            #     f.write(str(amr) + '\n\n')
     logger.info('Done!')

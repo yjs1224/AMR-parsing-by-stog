@@ -179,8 +179,11 @@ class _PredictManager:
         has_reader = self._dataset_reader is not None
         if has_reader:
             for batch in lazy_groups_of(self._get_instance_data(), self._batch_size):
-                for model_input_instance, result in zip(batch, self._predict_instances(batch)):
-                    self._maybe_print_to_console_and_file(result, str(model_input_instance))
+                try:
+                    for model_input_instance, result in zip(batch, self._predict_instances(batch)):
+                        self._maybe_print_to_console_and_file(result, str(model_input_instance))
+                except:
+                    continue
         else:
             for batch_json in lazy_groups_of(self._get_json_data(), self._batch_size):
                 for model_input_json, result in zip(batch_json, self._predict_json(batch_json)):

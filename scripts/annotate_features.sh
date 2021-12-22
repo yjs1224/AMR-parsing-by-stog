@@ -13,3 +13,7 @@ amr_dir=$1
 python -u -m stog.data.dataset_readers.amr_parsing.preprocess.feature_annotator \
     ${amr_dir}/test.txt ${amr_dir}/train.txt ${amr_dir}/dev.txt \
     --compound_file ${compound_file}
+
+# python -u -m stog.data.dataset_readers.amr_parsing.preprocess.feature_annotator \
+#     ${amr_dir}/test.txt  \
+#     --compound_file ${compound_file}
