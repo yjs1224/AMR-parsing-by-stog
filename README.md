@@ -1,4 +1,4 @@
-# Forked from sheng-z/stog
+# Forked from [sheng-z/stog](https://github.com/sheng-z/stog)
 
 - Add some try execptions 
 - change pycorenlp to [stanza](https://github.com/stanfordnlp/stanza), which is the Official Stanford NLP Python Library for Many Human Languages.
