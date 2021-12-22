@@ -4,6 +4,13 @@
 - change pycorenlp to [stanza](https://github.com/stanfordnlp/stanza), which is the Official Stanford NLP Python Library for Many Human Languages.
 
 
+## run on your own text data
+
+- step 1 Environment Setup (seeing following)
+- step 2 Data Preparation (seeing following)
+- run ./pineline.sh your_txt_file_path your_output_dir
+
+
 # AMR Parsing as Sequence-to-Graph Transduction
 
 Code for the AMR Parser 
@@ -137,11 +144,7 @@ We adopted some modules or code snippets from [AllenNLP](https://github.com/alle
  and [NeuroNLP2](https://github.com/XuezheMax/NeuroNLP2).
 Thanks to these open-source projects!
 
-## run on your own text data
 
-- step 1
-- step 2
-- run ./pineline.sh your_txt_file_path your_output_dir
 
 
 ## License
