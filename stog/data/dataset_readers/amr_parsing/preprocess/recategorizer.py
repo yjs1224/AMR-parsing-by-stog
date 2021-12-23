@@ -345,6 +345,10 @@ if __name__ == '__main__':
 
     for file_path in args.amr_files:
         with open(file_path + '.recategorize', 'w', encoding='utf-8') as f:
-            for amr in recategorizer.recategorize_file(file_path):
-                f.write(str(amr) + '\n\n')
+            for i, amr in  enumerate(recategorizer.recategorize_file(file_path)):
+                try:
+                    f.write(str(amr) + '\n\n')
+                except:
+                    print(f"recategorize\t\tERROR @ {amr.id}")
+                    continue
 

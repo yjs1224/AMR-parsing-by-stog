@@ -127,6 +127,10 @@ if __name__ == '__main__':
 
     for file_path in args.amr_files:
         with open(file_path + '.nosense', 'w', encoding='utf-8') as f:
-            for amr in remover.remove_file(file_path):
-                f.write(str(amr) + '\n\n')
+            for i, amr in enumerate(remover.remove_file(file_path)):
+                try:
+                    f.write(str(amr) + '\n\n')
+                except:
+                    print(f"sense_remover\t\tERROR @ {amr.id}")
+                    continue
         remover.reset_statistics()

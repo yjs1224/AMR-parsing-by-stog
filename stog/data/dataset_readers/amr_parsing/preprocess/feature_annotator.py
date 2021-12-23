@@ -221,6 +221,7 @@ if __name__ == '__main__':
                     amr.ner_tags = annotation['ner_tags']
                     AMRIO.dump([amr], f)
                 except:
+                    print(f"feature_annotator\t\tERROR @ {amr.id}")
                     continue
             # for i, sentence in enumerate(lines, 1):
             #     if i % 1000 == 0:

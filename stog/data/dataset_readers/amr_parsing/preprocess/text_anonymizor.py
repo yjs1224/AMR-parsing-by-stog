@@ -241,9 +241,10 @@ if __name__ == "__main__":
         os.path.join(args.util_dir, "text_anonymization_rules.json"))
 
     with open(args.amr_file + ".recategorize", "w", encoding="utf-8") as f:
-        for amr in AMRIO.read(args.amr_file):
+        for i, amr in enumerate(AMRIO.read(args.amr_file)):
             try:
                 amr.abstract_map = text_anonymizor(amr)
                 f.write(str(amr) + "\n\n")
             except:
+                print(f"text_anonymization\t\tERROR @ {amr.id}")
                 continue

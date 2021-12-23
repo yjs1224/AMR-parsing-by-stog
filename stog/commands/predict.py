@@ -183,6 +183,7 @@ class _PredictManager:
                     for model_input_instance, result in zip(batch, self._predict_instances(batch)):
                         self._maybe_print_to_console_and_file(result, str(model_input_instance))
                 except:
+                    print("Predicti\t\tERROR")
                     continue
         else:
             for batch_json in lazy_groups_of(self._get_json_data(), self._batch_size):
@@ -224,7 +225,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--silent', action='store_true', help='do not print output to stdout')
 
-    parser.add_argument('--cuda-device', type=int, default=-1, help='id of GPU to use (if any)')
+    parser.add_argument('--cuda-device', type=int, default=0, help='id of GPU to use (if any)')
 
     parser.add_argument('--use-dataset-reader',
                            action='store_true',
@@ -243,7 +244,6 @@ if __name__ == "__main__":
                         type=int,
                         default=1,
                         help="Beam size for seq2seq decoding")
-
     args = parser.parse_args()
 
     if args.cuda_device >= 0:

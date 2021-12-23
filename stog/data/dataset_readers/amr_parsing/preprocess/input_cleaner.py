@@ -381,7 +381,7 @@ def join_time_description(amr):
                     except:
                         continue
                     span = list(range(i - 1, i + 1))
-                    joined_tokens = ''.join([x, y.lower()])
+                    joined_tokens = ''.join([str(x), y.lower()])
                     pos = 'CD'
                     ner = 'TIME'
                     break
@@ -625,7 +625,10 @@ if __name__ == '__main__':
 
     for file_path in args.amr_files:
         with open(file_path + '.input_clean', 'w', encoding='utf-8') as f:
-            for amr in AMRIO.read(file_path):
-                clean(amr)
-                f.write(str(amr) + '\n\n')
-
+            for i, amr in enumerate(AMRIO.read(file_path)):
+                try:
+                    clean(amr)
+                    f.write(str(amr) + '\n\n')
+                except:
+                    print(f"input_cleaner\t\tERROR @ {amr.id}")
+                    continue
