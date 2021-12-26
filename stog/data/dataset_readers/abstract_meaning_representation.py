@@ -30,7 +30,7 @@ class AbstractMeaningRepresentationDatasetReader(DatasetReader):
     def __init__(self,
                  token_indexers: Dict[str, TokenIndexer] = None,
                  word_splitter = None,
-                 lazy: bool = False,
+                 lazy: bool = True,
                  skip_first_line: bool = True,
                  evaluation: bool = False
                  ) -> None:
