@@ -38,5 +38,10 @@ if __name__ == '__main__':
 
     for file_path in args.amr_files:
         with open(file_path + '.frame', 'w', encoding='utf-8') as f:
-            for amr in nr.restore_file(file_path):
-                f.write(str(amr) + '\n\n')
+            for amr in AMRIO.read(file_path):
+                id = amr.id
+                try:
+                    nr.restore_instance(amr)
+                    f.write(str(amr) + '\n\n')
+                except:
+                    print(f"restore instance ERROR \t\t@ {id}")

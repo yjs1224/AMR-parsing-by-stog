@@ -207,5 +207,12 @@ if __name__ == '__main__':
 
     for file_path in args.amr_files:
         with open(file_path + '.expand', 'w', encoding='utf-8') as f:
-            for amr in expander.expand_file(file_path):
-                f.write(str(amr) + '\n\n')
+            for i, amr in enumerate(AMRIO.read(file_path)):
+                id = amr.id
+                try:
+                    expander.expand_graph(amr)
+                    # expander.print_stats()
+                    f.write(str(amr) + '\n\n')
+                except:
+                    print(f"expander ERROR \t\t@ {id}")
+

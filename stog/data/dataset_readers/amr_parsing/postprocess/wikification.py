@@ -177,5 +177,10 @@ if __name__ == '__main__':
         wikification.load_utils()
         for file_path in args.amr_files:
             with open(file_path + '.wiki', 'w', encoding='utf-8') as f:
-                for amr in wikification.wikify_file(file_path):
-                    f.write(str(amr) + '\n\n')
+                    for i, amr in enumerate(AMRIO.read(file_path)):
+                        id = amr.id
+                        try:
+                            wikification.wikify_graph(amr)
+                            f.write(str(amr) + '\n\n')
+                        except:
+                            print(f"wikification ERROR \t\t@ {id}")
